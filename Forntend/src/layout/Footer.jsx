@@ -1,69 +1,127 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import CopyrightIcon from '@mui/icons-material/Copyright';
-import CallIcon from '@mui/icons-material/Call';
-import EmailIcon from '@mui/icons-material/Email';
+import React from "react";
+import { Link as RouterLink } from "react-router-dom";
+import {
+  Box,
+  Container,
+  Grid,
+  Typography,
+  Link,
+  IconButton,
+  Divider,
+} from "@mui/material";
+import {
+  Facebook as FacebookIcon,
+  Twitter as TwitterIcon,
+  Instagram as InstagramIcon,
+  LinkedIn as LinkedInIcon,
+} from "@mui/icons-material";
 
 const Footer = () => {
-  const footerContact = [
-    {
-      icon: <CopyrightIcon />,
-      title: 'Find us',
-      details: 'Mumbai, Maharashtra',
-    },
-    {
-      icon: <CallIcon />,
-      title: 'Call us',
-      details: '8378027947',
-    },
-    {
-      icon: <EmailIcon />,
-      title: 'Mail us',
-      details: 'yadavamit8968@gmail.com',
-    },
-  ];
-
   return (
-    <footer className="footer-section">
-      <div className="container grid grid-three-cols">
-        {footerContact.map((currData, index) => {
-          const { icon, title, details } = currData;
-          return (
-            <div className="footer-contact" key={index}>
-              <div className="icon">{icon}</div>
-              <div className="footer-contact-text">
-                <p>{title}</p>
-                <p>{details}</p>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+    <Box
+      component="footer"
+      sx={{
+        bgcolor: "#333",
+        color: "white",
+        py: 20,
+        mt: 0,
+      }}
+    >
+      <Container maxWidth="lg">
+        <Grid container spacing={4}>
+          {/* About Section */}
+          <Grid item xs={12} md={4}>
+            <Typography variant="h6" gutterBottom>
+              About Blog Platform
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 2 }}>
+              A modern platform for sharing ideas, stories, and knowledge.
+              Connect with writers and readers from around the world.
+            </Typography>
+            <Box sx={{ mt: 2 }}>
+              <IconButton color="inherit" aria-label="Facebook">
+                <FacebookIcon />
+              </IconButton>
+              <IconButton color="inherit" aria-label="Twitter">
+                <TwitterIcon />
+              </IconButton>
+              <IconButton color="inherit" aria-label="Instagram">
+                <InstagramIcon />
+              </IconButton>
+              <IconButton color="inherit" aria-label="LinkedIn">
+                <LinkedInIcon />
+              </IconButton>
+            </Box>
+          </Grid>
 
-      <div className="copyright-area">
-        <div className="container">
-          <div className="grid grid-two-cols">
-            <div className="copyright-text">
-              <p>
-                Copyright &copy; 2024, All Rights Reserved
-                <NavLink to="/"> Amit Yadav </NavLink>
-              </p>
-            </div>
+          {/* Quick Links */}
+          <Grid item xs={12} md={4}>
+            <Typography variant="h6" gutterBottom>
+              Quick Links
+            </Typography>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+              <Link
+                component={RouterLink}
+                to="/"
+                color="inherit"
+                sx={{ textDecoration: "none" }}
+              >
+                Home
+              </Link>
+              <Link
+                component={RouterLink}
+                to="/about"
+                color="inherit"
+                sx={{ textDecoration: "none" }}
+              >
+                About Us
+              </Link>
+              <Link
+                component={RouterLink}
+                to="/contact"
+                color="inherit"
+                sx={{ textDecoration: "none" }}
+              >
+                Contact
+              </Link>
+              <Link
+                component={RouterLink}
+                to="/create"
+                color="inherit"
+                sx={{ textDecoration: "none" }}
+              >
+                Create Blog
+              </Link>
+            </Box>
+          </Grid>
 
-            <div className="footer-menu">
-              <ul>
-                <li>
-                  <NavLink to="/">Home</NavLink>
-                </li>
-                <li>
-                  <NavLink to="/contact">Contact</NavLink>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </footer>
+          {/* Contact Info */}
+          <Grid item xs={12} md={4}>
+            <Typography variant="h6" gutterBottom>
+              Contact Us
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 1 }}>
+              Email: support@blogplatform.com
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 1 }}>
+              Phone: +91 9373474919
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 1 }}>
+              Address: 123 Blog Street, Tech City, Mumbai
+            </Typography>
+          </Grid>
+        </Grid>
+
+        <Divider sx={{ my: 4, bgcolor: "rgba(255, 255, 255, 0.1)" }} />
+
+        {/* Copyright */}
+        <Box sx={{ textAlign: "center" }}>
+          <Typography variant="body2">
+            © {new Date().getFullYear()} Blog Platform. All rights reserved.
+          </Typography>
+        </Box>
+      </Container>
+    </Box>
   );
 };
 

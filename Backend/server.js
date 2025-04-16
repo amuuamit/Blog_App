@@ -19,7 +19,7 @@ const { cloudinaryConfig } = require("./Configurations/cloudinary.config");
 app.use(cookieParser());
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/article", articleRouter);
-app.use("/api/v1/comment", commentRouter);
+app.use("/api/v1/comments", commentRouter);
 app.listen(PORT, () => {
     dbConfig();
     // cloudinaryConfig();

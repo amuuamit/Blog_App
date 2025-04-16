@@ -3,6 +3,9 @@ import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 import server from "../environment";
 import { Delete, Edit } from "@mui/icons-material";
+import "./ArticlesComponent.css";
+import Header from "../layout/Header";
+import Footer from "../layout/Footer";
 
 const ArticlesComponent = () => {
   const { user } = useContext(AuthContext);
@@ -13,7 +16,7 @@ const ArticlesComponent = () => {
     article_description: "",
     user: user?._id || "",
     role: user?.role || "user",
-    image: user.image || null,
+    image: null,
     tags: "lifestyle",
   });
   const [editingArticle, setEditingArticle] = useState(null);
@@ -220,53 +223,81 @@ const ArticlesComponent = () => {
   };
 
   return (
-    <div className="article_form">
-      <div className="article_form_wrapper">
-        <h2>{editingArticle ? "Edit Article" : "Create Article"}</h2>
-        <form onSubmit={editingArticle ? handleUpdate : handleSubmit}>
-          <input
-            type="text"
-            name="article_title"
-            value={newArticle.article_title}
-            onChange={handleChange}
-            placeholder="Title"
-            required
-          />
-          <textarea
-            name="article_description"
-            value={newArticle.article_description}
-            onChange={handleChange}
-            placeholder="Description"
-            required
-          ></textarea>
-          <input type="file" name="file" onChange={handleFileChange} /> {/* Change field name to 'file' */}
-          <select name="tags" value={newArticle.tags} onChange={handleChange}>
-            <option value="lifestyle">Lifestyle</option>
-            <option value="tech">Tech</option>
-            <option value="food">Food</option>
-          </select>
-          <button type="submit">{editingArticle ? "Update Article" : "Create Article"}</button>
-        </form>
+    <>
+      <Header />
+      <div className="article_container">
+        {/* Left Side - Article Form */}
+        <div className="article_form">
+          <div className="article_form_wrapper">
+            <h2>{editingArticle ? "Edit Article" : "Create Article"}</h2>
+            <form onSubmit={editingArticle ? handleUpdate : handleSubmit}>
+              <input
+                type="text"
+                name="article_title"
+                value={newArticle.article_title}
+                onChange={handleChange}
+                placeholder="Title"
+                required
+              />
+              <textarea
+                name="article_description"
+                value={newArticle.article_description}
+                onChange={handleChange}
+                placeholder="Description"
+                required
+              ></textarea>
+              <input type="file" name="file" onChange={handleFileChange} />
+              <select
+                name="tags"
+                value={newArticle.tags}
+                onChange={handleChange}
+              >
+                <option value="lifestyle">Lifestyle</option>
+                <option value="tech">Tech</option>
+                <option value="food">Food</option>
+              </select>
+              <button type="submit">
+                {editingArticle ? "Update Article" : "Create Article"}
+              </button>
+            </form>
+          </div>
+        </div>
+
+        {/* Right Side - Articles List */}
         <div className="articles-container">
           <h3>Existing Articles</h3>
-          <ul>
-            {articles.map((article) => (
-              <li key={article._id}>
-                <h3>{article.article_title}</h3>
-                <p>{article.article_description}</p>
-                {article.article_image_url && (
-                  <img src={article.article_image_url} alt={article.article_title} style={{ width: "100px", height: "100px" }} />
-                )}
-                <p>Created At: {new Date(article.createdAt).toLocaleString()}</p>
-                <button onClick={() => handleEdit(article)}><Edit/> Edit </button>
-                <button onClick={() => handleDelete(article._id)}><Delete/></button>
-              </li>
-            ))}
-          </ul>
+          {articles.length === 0 ? (
+            <p>No articles found.</p>
+          ) : (
+            <ul>
+              {articles.map((article) => (
+                <li className="article-card" key={article._id}>
+                  {article.image && (
+                    <img src={article.image} alt={article.article_title} />
+                  )}
+                  <div className="article-card-content">
+                    <h3>{article.article_title}</h3>
+                    <p>{article.article_description}</p>
+                    <p>
+                      Created At: {new Date(article.createdAt).toLocaleString()}
+                    </p>
+                    <div className="article-card-buttons">
+                      <button onClick={() => handleEdit(article)}>
+                        <Edit /> Edit
+                      </button>
+                      <button onClick={() => handleDelete(article._id)}>
+                        <Delete />
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 };
-
 export default ArticlesComponent;

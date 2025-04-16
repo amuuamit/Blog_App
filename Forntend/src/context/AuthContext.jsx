@@ -28,11 +28,15 @@ export const AuthProvider = ({ children }) => {
 
   const handleLogin = async (formData) => {
     try {
-      const response = await axios.post(`${server}/api/v1/user/login`, formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.post(
+        `${server}/api/v1/user/login`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       console.log("Login response:", response.data);
 

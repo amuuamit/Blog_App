@@ -2,24 +2,32 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { Article } = require("../Models/article.model");
 const { User } = require("../Models/user.model");
-const cloudinaryUpload = require('../helper/cloudinaryUpload');
+const { cloudinary } = require("../Configurations/cloudinary.config");
 
 async function createArticle(req, res) {
   try {
     const { article_title, article_description, tags } = req.body;
-    const uploadResult = await cloudinaryUpload(req.file);
     const createdBy = req.user._id;
+
+    let image = "";
+    if (req.file) {
+      const result = await cloudinary.uploader.upload(req.file.path);
+      image = result.secure_url;
+    }
 
     const newArticle = new Article({
       article_title,
       article_description,
       user: createdBy,
-      article_image_url: uploadResult.secure_url,
+      image,
       tags,
       createdAt: new Date(),
     });
 
     await newArticle.save();
+
+    // Update the user's articles array
+    await User.findByIdAndUpdate(createdBy, { $push: { articles: newArticle._id } });
 
     res.status(201).json(newArticle);
   } catch (error) {
@@ -73,7 +81,7 @@ async function updateArticle(req, res) {
   try {
     const { id } = req.params;
     const { article_title, article_description, tags } = req.body;
-    const uploadedResult = req.file ? await cloudinaryUpload(req.file) : undefined;
+    const uploadedResult = req.file ? await cloudinary.uploader.upload(req.file.path) : undefined;
 
     const loggedInUserId = req.user._id;
     const article = await Article.findById(id);
@@ -90,7 +98,7 @@ async function updateArticle(req, res) {
     article.article_description = article_description;
     article.tags = tags;
     if (uploadedResult) {
-      article.article_image_url = uploadedResult.secure_url;
+      article.image = uploadedResult.secure_url;
     }
 
     await article.save();
@@ -116,7 +124,7 @@ async function deleteArticle(req, res) {
       return res.status(401).json({ message: "Unauthorized to delete this article." });
     }
 
-    await article.remove();
+    await Article.deleteOne({ _id: id });
 
     res.status(200).json({ message: "Article deleted successfully" });
   } catch (error) {

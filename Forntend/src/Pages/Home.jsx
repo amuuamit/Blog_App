@@ -1,14 +1,14 @@
-import React from 'react'
-import HeroSection from '../component/HeroSection'
-import About from '../component/About'
+import React from "react";
+import HeroSection from "../component/HeroSection";
+import About from "../component/About";
 
 const Home = () => {
   return (
     <>
-    <HeroSection />
-    <About />
+      <HeroSection />
+      <About />
     </>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

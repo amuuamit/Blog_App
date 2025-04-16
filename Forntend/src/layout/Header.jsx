@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { styled, alpha } from "@mui/material/styles";
-import { NavLink, useNavigate } from "react-router-dom";  // Import NavLink for navigation
+import { Link, Navigate, NavLink, useNavigate } from "react-router-dom"; // Import NavLink for navigation
 import { Button } from "@mui/material";
-
 
 import {
   AppBar,
@@ -66,8 +65,14 @@ export default function Header() {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event) => setAnchorEl(event.currentTarget);
-  const handleMenuClose = () => setAnchorEl(null);
-  const handleMobileMenuOpen = (event) => setMobileMoreAnchorEl(event.currentTarget);
+  const handleProfile = () => {
+    router("/profile");
+  };
+  const handleMyAccount = () => {
+    router("/myAccount");
+  };
+  const handleMobileMenuOpen = (event) =>
+    setMobileMoreAnchorEl(event.currentTarget);
   const handleMobileMenuClose = () => setMobileMoreAnchorEl(null);
 
   const menuId = "primary-search-account-menu";
@@ -79,12 +84,12 @@ export default function Header() {
       id={menuId}
       keepMounted
       open={isMenuOpen}
-      onClose={handleMenuClose}
+      // onClose={handleMenuClose}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
       transformOrigin={{ vertical: "top", horizontal: "right" }}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleProfile}>Profile</MenuItem>
+      <MenuItem onClick={handleMyAccount}>My account</MenuItem>
     </Menu>
   );
 
@@ -127,19 +132,29 @@ export default function Header() {
     localStorage.removeItem("token");
     alert("You are Logged Out");
     router("/login");
-
-  }
+  };
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" sx={{ bgcolor: (theme) => theme.palette.grey[800] }}>
+      <AppBar
+        position="fixed"
+        sx={{ bgcolor: (theme) => theme.palette.grey[800] }}
+      >
         <Toolbar>
           {/* Left Menu Icon */}
           <IconButton size="large" edge="start" color="inherit" sx={{ mr: 2 }}>
-            <img src="./blog-icon.png" style={{ width: "50px" }} alt="Blog Icon" />
+            <img
+              src="./blog-icon.png"
+              style={{ width: "50px" }}
+              alt="Blog Icon"
+            />
           </IconButton>
 
           {/* Title */}
-          <Typography variant="h6" noWrap sx={{ display: { xs: "none", sm: "block" } }}>
+          <Typography
+            variant="h6"
+            noWrap
+            sx={{ display: { xs: "none", sm: "block" } }}
+          >
             Blog App
           </Typography>
 
@@ -148,48 +163,84 @@ export default function Header() {
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
-            <StyledInputBase placeholder="Search…" inputProps={{ "aria-label": "search" }} />
+            <StyledInputBase
+              placeholder="Search…"
+              inputProps={{ "aria-label": "search" }}
+            />
           </Search>
 
           <Box sx={{ flexGrow: 1 }} />
 
-           {/* Navigation Links  */}
+          {/* Navigation Links  */}
           <Box sx={{ display: { xs: "none", md: "flex" }, gap: 5 }}>
-            <NavLink to="/" style={{ color: "white", textDecoration: "none", fontSize: "16px" }}>
+            <NavLink
+              to="/"
+              style={{
+                color: "white",
+                textDecoration: "none",
+                fontSize: "16px",
+              }}
+            >
               Home
             </NavLink>
-            <NavLink to="/contact" style={{ color: "white", textDecoration: "none", fontSize: "16px" }}>
+            <NavLink
+              to="/contact"
+              style={{
+                color: "white",
+                textDecoration: "none",
+                fontSize: "16px",
+              }}
+            >
               Contact
             </NavLink>
-            <button 
-              style={{ 
-                color: "white", 
-                background: "transparent", 
-                border: "none", 
-                textDecoration: "none", 
-                fontSize: "16px", 
-                cursor: "pointer"
-              }} 
+            <NavLink
+              to="/about"
+              style={{
+                color: "white",
+                textDecoration: "none",
+                fontSize: "16px",
+              }}
+            >
+              About
+            </NavLink>
+            <button
+              style={{
+                color: "white",
+                background: "transparent",
+                border: "none",
+                textDecoration: "none",
+                fontSize: "16px",
+                cursor: "pointer",
+              }}
               onClick={handleLogout}
             >
               Log Out
             </button>
           </Box>
-          
+
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton size="large" color="inherit">
               <Badge badgeContent={17} color="error">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <IconButton size="large" edge="end" onClick={handleProfileMenuOpen} color="inherit">
+            <IconButton
+              size="large"
+              edge="end"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
               <AccountCircle />
             </IconButton>
           </Box>
 
           {/* Mobile Menu Icon */}
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
-            <IconButton size="large" color="inherit" onClick={handleMobileMenuOpen}>
+            <IconButton
+              size="large"
+              color="inherit"
+              onClick={handleMobileMenuOpen}
+            >
               <MoreIcon />
             </IconButton>
           </Box>
